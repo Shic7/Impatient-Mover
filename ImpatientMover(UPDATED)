@@ -96,9 +96,9 @@ int main()
 			}
 		}
 	}
-
-	outputFile.close();
+	
 	inputFile.close();
+	outputFile.close();
 
 	cout << "Solution has been outputted to the 'output.txt' file."; //Message to let the user know that the program succeeded
 

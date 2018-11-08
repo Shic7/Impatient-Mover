@@ -11,32 +11,35 @@ int naiveMover (int n, int weightdata[])
 {
 	
 	int i, j, a;
-	int mindata[n];
+	int mindata[n]; ///possibility for this array to be in the helper function, as map
 	//mindata = {};
 	fill_n(mindata, n, 0);
 	int maxBox = 0;
 
 	for (a= 1; a <= n; a++)
 	{
-		cout << weightdata[n-a] << " = Original";
+		cout << "Original i box: " << weightdata[n-a];
 	int minvalue = *std::min_element(weightdata+(n-a),weightdata+n);
-	cout << endl << "min " << minvalue << endl;
+	//cout << endl << "min " << minvalue << endl;
 	
+//////////the Base Case
 	if ( weightdata [n-a] == minvalue)
-		mindata[(n-a)] += 1;
+		mindata[(n-a)] += 1;	//Increment max boxes for this instance
+
+//////////the Recurrence
 	else
-		////////////the recurrence 
 	{
 		for (i=(n-a)+1; i < n; i++)
-		{cout << " && " << weightdata[n-a] << " > " << weightdata[i] << endl;
+		{
+			cout << " && " << weightdata[n-a] << " > " << weightdata[i] << endl;
 			if (weightdata[n-a] > weightdata[i])
 			{
 				cout << mindata[i] << " >== " <<  maxBox << endl;
 				if(mindata[i] > maxBox)
-					maxBox = mindata[i];//update mx box 
+					maxBox = mindata[i];//update max box 
 			}
 		}
-		mindata[n-a] = 1 + maxBox;
+		mindata[n-a] = 1 + maxBox;	//Increment max boxes for this instance
 		maxBox = 0; //clear max boxes variable
 		
 	}

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -9,12 +10,12 @@ using namespace std;
 int main()
 {
 	ifstream inputFile;
-	ofstream outputFile("output.txt");
 
 	inputFile.open("input.txt");
 
 	if (!inputFile) {
 		cout << "The file does not exist.";
+    exit(1);
 	}
 
 	else {
@@ -30,6 +31,9 @@ int main()
 		istringstream str2(str);
 
 		str2 >> instances;
+   
+   ofstream outputFile("output.txt");
+   
 
 		for (i = 0; i < instances; i++)
 		{
@@ -59,9 +63,9 @@ int main()
 			int z;
 			int current;
 
-			vector<int> vecSequence; //Will store the current possibility into a vector vecSequence
+			vector<int> vecSequence; //We will store the largest counts for each of our possibilities into a vector called vecSequence (acting as our direct map)
 
-			for (k = n - 1; k > -1; k--)	//Starts from the rightside of our vector and moves left after each iter
+			for (k = n - 1; k > -1; k--)	//Starts from the rightside of our vector and moves one to the left after each iteration
 			{
 				current = vec.at(k);
 
@@ -71,19 +75,20 @@ int main()
 				{
 					if (vec.at(z) <= current) //If the value at z is less than our current k value
 					{
+						//Here we back through our vector (acting as our direct map) of past counts we've already calculated for our previous k's (subproblems)
 						if (vecSequence.at(n - z - 1) > count) //Checks if the count for our current value in k is greater than count, and set count to the larger count if it is true
 							count = vecSequence.at(n - z - 1);
 					}
 				}
 
-				count = 1 + count; //Add 1 to max because we'll always be adding one box to our current max
+				count = 1 + count; //Add 1 to max because we'll always be adding one box to our new count
 
 				vecSequence.push_back(count); //Pushes the count for our current k onto vecSequence
 			}
 
 			int maxCount = vecSequence.at(0);
 
-			for (j = 1; j < vecSequence.size(); j++) //Goes through the vector of all our stored counts and returns the maxCount
+			for (j = 1; j < vecSequence.size(); j++) //Goes through the vector (acting as our direct map) of all our stored counts and returns the maxCount
 			{
 				if (vecSequence.at(j) > maxCount)
 					maxCount = vecSequence.at(j);
@@ -95,13 +100,12 @@ int main()
 				outputFile << endl;
 			}
 		}
+ 	  outputFile.close();
 	}
-	
+
 	inputFile.close();
-	outputFile.close();
 
-	cout << "Solution has been outputted to the 'output.txt' file."; //Message to let the user know that the program succeeded
-
-	cin.get();;
-	cin.get();
+	cout << "Solution has been outputted to a file called 'output.txt'." << endl; //Message to let the user know that the program succeeded
+ 
+  return 0;
 }
